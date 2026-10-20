@@ -1,0 +1,11 @@
+const fs=require("fs");
+const slug=s=>s.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const MENU=new Function(fs.readFileSync("js/data.js","utf8")+";return MENU")();
+const files=fs.existsSync("images")?fs.readdirSync("images").filter(f=>/\.(jpe?g|webp|png)$/i.test(f)):[];
+const map={};
+files.forEach(f=>{map[f.replace(/\.[^.]+$/,"").toLowerCase()]=f});
+fs.writeFileSync("js/photos.js","const PHOTOS="+JSON.stringify(map)+";\n");
+const names=[...new Set(MENU.flatMap(c=>c.items.map(i=>slug(i.n))))];
+const missing=names.filter(n=>!map[n]);
+console.log("photos linked:",names.length-missing.length,"of",names.length);
+if(missing.length)console.log("missing:\n"+missing.map(n=>"images/"+n+".jpg").join("\n"));
