@@ -5,7 +5,6 @@
    WhatsApp-only mode.
    ============================================================ */
 const DB = (() => {
-  const VERSION = "2026-10-19e"; // bump when db.js changes — check via DB.version
   let db = null, ready = false;
 
   /* Accept BOTH variable names: the site's FIREBASE_CONFIG and the
@@ -57,42 +56,36 @@ const DB = (() => {
     return id;
   }
 
-  /* Live list of ALL orders (kitchen). Uses polling with once("value")
-     instead of a persistent on("value") stream — one-off reads are far
-     more reliable on flaky networks/proxies that break Firebase's
-     long-lived WebSocket stream. Same callback API as before. */
-  function listenOrders(cb, intervalMs = 4000) {
+  /* Live list of ALL orders (kitchen). cb receives array, newest first. */
+  function listenOrders(cb) {
     if (!init()) return () => {};
-    let stopped = false;
+    // Listen to the collection directly, then sort in the client. This avoids
+    // a query/index or stale-query limit hiding newer orders from the kitchen.
     const ref = ORDERS();
-    async function poll() {
-      if (stopped) return;
-      try {
-        const snap = await ref.once("value");
-        const list = [];
-        snap.forEach(c => list.push(c.val()));
-        list.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
-        cb(list.reverse());
-      } catch (e) { console.warn("[DB] order poll failed:", e.message); }
-      if (!stopped) setTimeout(poll, intervalMs);
-    }
-    poll();
-    return () => { stopped = true; };
+    const h = ref.on("value", snap => {
+      const list = [];
+      snap.forEach(c => {
+        const order = c.val();
+        if (order && typeof order === "object") list.push(order);
+      });
+      list.sort((a, b) => (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0));
+      cb(list);
+    }, error => {
+      console.error("[DB] Could not read kitchen orders:", error);
+      cb(null, error);
+    });
+    return () => ref.off("value", h);
   }
 
-  /* Live single order (tracking page). Polling, same reason as above. */
-  function listenOrder(id, cb, intervalMs = 4000) {
+  /* Live single order (tracking page). cb receives order or null. */
+  function listenOrder(id, cb, onError) {
     if (!init()) return () => {};
-    let stopped = false;
     const ref = ORDERS().child(id);
-    async function poll() {
-      if (stopped) return;
-      try { cb((await ref.once("value")).val()); }
-      catch (e) { console.warn("[DB] order poll failed:", e.message); }
-      if (!stopped) setTimeout(poll, intervalMs);
-    }
-    poll();
-    return () => { stopped = true; };
+    const h = ref.on("value", snap => cb(snap.val()), error => {
+      console.error("[DB] Could not read order:", error);
+      if (onError) onError(error);
+    });
+    return () => ref.off("value", h);
   }
 
   /* Kitchen changes status. Also stamps history. */
@@ -129,7 +122,7 @@ const DB = (() => {
     return out;
   }
 
-  return { VERSION, version: VERSION, init, configured, debug, saveOrder, listenOrders, listenOrder, setStatus };
+  return { init, configured, debug, saveOrder, listenOrders, listenOrder, setStatus };
 })();
 
 const ORDER_STATUSES = ["new", "accepted", "preparing", "ready", "dispatched", "delivered"];
