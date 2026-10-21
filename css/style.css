@@ -186,3 +186,87 @@ h1,h2,h3{font-family:var(--script);font-style:italic;font-weight:700;letter-spac
 .nav nav{flex-wrap:wrap;overflow-x:visible;justify-content:center;row-gap:2px}
 .nav nav>a,.dd>a{padding:8px 10px}
 }
+
+/* ===== Mobile redesign: compact desktop mirror (<=760px) ===== */
+@media(max-width:760px){
+/* Header: logo + compact buttons on one row, nav in one line below */
+.nav{gap:6px 8px;padding:6px 8px}
+.logo img{height:32px}
+.nav-r{gap:6px;margin-left:auto}
+.wa-pill{font-size:11px;padding:5px 8px;gap:4px}
+.wa-pill svg{width:14px;height:14px}
+.cartbtn{font-size:12px;padding:5px 8px}
+.cartbtn span{min-width:19px;margin-left:3px;padding:0 5px;font-size:11px}
+.nav nav{flex-wrap:nowrap;overflow-x:visible;justify-content:space-between;gap:0;padding-top:2px}
+.nav nav>a,.dd>a{padding:6px 4px;font-size:12px}
+/* Hero: text left, chef right — like desktop */
+.hero{min-height:0}
+.hero-img{width:54%;height:100%;opacity:1;object-position:7% 50%;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24%);mask-image:linear-gradient(90deg,transparent 0,#000 24%)}
+.hero::after{height:44px}
+.hero-in{width:63%;margin-left:0;margin-right:auto;padding:16px 6px 48px 14px;gap:2px}
+.status{font-size:11px;padding:2px 9px;margin-bottom:4px}
+.welcome{font-size:21px}
+.hero h1{font-size:31px;line-height:1.02}
+.tagline{font-size:11.5px;margin-top:5px;padding-bottom:3px}
+.banner{width:248px;max-width:84vw;gap:9px;margin-top:11px;padding:8px 18px 8px 11px}
+.banner i{font-size:23px}
+.banner b{font-size:18px}
+.banner small{font-size:10.5px}
+.wa-big{margin-top:10px;gap:8px;padding:7px 13px 7px 8px;border-radius:11px}
+.wa-big i{width:33px;height:33px}
+.wa-big svg{width:19px;height:19px}
+.wa-big small{font-size:10.5px}
+.wa-big b{font-size:18px}
+.cats{margin-top:-34px}
+/* General compactness */
+.sec{padding:24px 14px}
+.sec h2{font-size:27px}
+.sec-head{margin-bottom:12px}
+.pill{padding:7px 14px;font-size:12.5px}
+.ptitle{padding:16px 14px 2px}
+.ptitle h1{font-size:33px}
+.menu{padding:6px 14px 30px}
+#search{padding:9px 14px}
+.tabs{gap:6px;padding:10px 0}
+.tabs button{padding:7px 13px;font-size:13.5px}
+.cat{margin:20px 0}
+.cat h3{font-size:25px;margin-bottom:10px}
+.cards{gap:10px}
+.cb{padding:10px}
+.cb h4{font-size:15.5px}
+.deal-row{gap:10px}
+.deal{padding:30px 8px 10px;border-radius:14px}
+.tab{padding:3px 12px;font-size:12.5px}
+.deal p{font-size:12.5px;min-height:34px;margin:6px 0}
+.price{padding:7px;font-size:13.5px}
+.wa-panel{padding:16px 14px}
+.wa-panel h3{font-size:25px}
+.wa-panel ul{margin:10px auto}
+.wa-green{font-size:18px;padding:8px}
+.wa-green svg{width:24px;height:24px}
+.steps{gap:10px}
+.steps li{padding:13px}
+.steps b{font-size:16.5px}
+.steps span{font-size:13.5px}
+.offers{gap:12px}
+.offer{padding:15px}
+.offer h3{font-size:25px}
+.co{padding:16px 14px;gap:16px}
+.co h2{font-size:25px}
+.form{padding:14px}
+.boxes{padding:16px 14px}
+.box{padding:15px}
+.box h3{font-size:23px}
+.btn{padding:10px 18px}
+.qty button{width:30px;height:30px}
+.foot{padding:14px 14px 84px}
+.foot img{height:38px}
+.foot nav a{padding:0 8px;font-size:12.5px}
+.gm{font-size:19px}
+.foot-info{font-size:12px}
+}
+/* Very small phones: let the nav wrap tidily rather than squeeze */
+@media(max-width:350px){
+.nav nav{flex-wrap:wrap;justify-content:center;row-gap:0}
+.hero-in{width:67%}
+}
