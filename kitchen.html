@@ -13,7 +13,7 @@
 .ktabs{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap}
 .ktab{border:1px solid #444;background:#1c1414;color:#ffb703;border-radius:999px;padding:9px 20px;font-weight:700;cursor:pointer;font-size:14px}
 .ktab.on{background:#d62828;border-color:#d62828;color:#fff}
-.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(330px,100%),1fr));gap:16px}
 .kcard{background:#fff;border-radius:16px;overflow:hidden;color:#222;box-shadow:0 8px 24px rgba(0,0,0,.4)}
 .kcard.flash{animation:kflash 1.2s ease 3}
 @keyframes kflash{0%,100%{box-shadow:0 8px 24px rgba(0,0,0,.4)}50%{box-shadow:0 0 0 6px #ffb703,0 8px 30px rgba(255,183,3,.6)}}

@@ -173,3 +173,16 @@ h1,h2,h3{font-family:var(--script);font-style:italic;font-weight:700;letter-spac
 .foot-in{justify-content:center;text-align:center}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+/* ===== Mobile fix: categories strip ===== */
+@media(max-width:760px){
+.cats{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cats a{min-width:0}
+.cats img{max-width:76px}
+.cats span{padding:3px 7px;font-size:12px}
+}
+/* ===== Mobile fix: nav links wrap ===== */
+@media(max-width:760px){
+.nav nav{flex-wrap:wrap;overflow-x:visible;justify-content:center;row-gap:2px}
+.nav nav>a,.dd>a{padding:8px 10px}
+}
